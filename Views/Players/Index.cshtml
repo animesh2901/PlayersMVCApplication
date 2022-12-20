@@ -1,0 +1,29 @@
+﻿@model List<PlayersMVCApplication.Models.Player.Player>
+
+@{
+}
+
+<h1> Players List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>TEAM</th>
+            <th>JERSEY NUMBER</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.Id</td>
+                <td>@player.Name</td>
+                <td>@player.Team</td>
+                <td>@player.JersyNumber</td>
+                <td><a href = "Players/View/@player.Id">View</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
