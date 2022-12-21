@@ -70,15 +70,15 @@ namespace PlayersMVCApplication.Controllers
         //For updation of existing player in DB; Go to the view.cshtml page
         //After click on view link button from PlayerList.cshtml page
         [HttpPost]
-        public async Task<IActionResult> Update (UpdateDeletePlayerViewModel playerModel)
+        public async Task<IActionResult> Update (Player player)
         {
-            var player = await dbContext.Players.FindAsync(playerModel.Id);
+            var updatePlayer = await dbContext.Players.FindAsync(player.Id);
 
-            if (player != null)
+            if (updatePlayer != null)
             {
-                player.Name = playerModel.Name;
-                player.Team= playerModel.Team;
-                player.JersyNumber = playerModel.JersyNumber;
+                updatePlayer.Name = player.Name;
+                updatePlayer.Team= player.Team;
+                updatePlayer.JersyNumber = player.JersyNumber;
 
                 await dbContext.SaveChangesAsync();
 
@@ -90,13 +90,13 @@ namespace PlayersMVCApplication.Controllers
 
         //Finally Delete Existing player in DB on click of Delete button in View.cshtml page
         [HttpPost]
-        public async Task<IActionResult> Delete (UpdateDeletePlayerViewModel playerModel)
+        public async Task<IActionResult> Delete (Player player)
         {
-            var player = await dbContext.Players.FindAsync(playerModel.Id);
+            var deletePlayer = await dbContext.Players.FindAsync(player.Id);
 
-            if (player != null)
+            if (deletePlayer != null)
             {
-                dbContext.Players.Remove(player);
+                dbContext.Players.Remove(deletePlayer);
                 await dbContext.SaveChangesAsync();
 
                 return RedirectToAction("PlayerList");
