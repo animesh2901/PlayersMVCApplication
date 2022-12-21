@@ -33,38 +33,42 @@ namespace PlayersMVCApplication.Controllers
 
         //Add New Player in DB
         [HttpPost]
-        public async Task<IActionResult> Player(AddPlayerViewModel addPlayerViewModel)
+        public async Task<IActionResult> Player(Player player)
         {
-            var player = new Player()
-            {
-                Name = addPlayerViewModel.Name,
-                Team = addPlayerViewModel.Team,
-                JersyNumber = addPlayerViewModel.JersyNumber
+            var newPlayer = new Player()
+            {                
+                Name = player.Name,
+                Team = player.Team,
+                JersyNumber = player.JersyNumber
             };
-            await dbContext.Players.AddAsync(player);
+            await dbContext.Players.AddAsync(newPlayer);
             await dbContext.SaveChangesAsync();
             return RedirectToAction("PlayerList");
         }
 
+        //Return to PlayerList.cshtml page after successfully add new player
         [HttpGet]
         public async Task<IActionResult> View(int id)
         {
-            var player = await dbContext.Players.FirstOrDefaultAsync(a => a.Id == id);
+            //return View();
+            var validatePlayer = await dbContext.Players.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (player != null)
+            if (validatePlayer != null)
             {
-                var viewModel = new UpdateDeletePlayerViewModel
+                var viewModel = new Player
                 {
-                    Id = player.Id,
-                    Name = player.Name,
-                    Team = player.Team,
-                    JersyNumber = player.JersyNumber
+                    Id = validatePlayer.Id,
+                    Name = validatePlayer.Name,
+                    Team = validatePlayer.Team,
+                    JersyNumber = validatePlayer.JersyNumber
                 };
-                return await Task.Run(()=> View("View",viewModel));
+                return await Task.Run(() => View("View", viewModel));
             }
             return RedirectToAction("PlayerList");
         }
 
+        //For updation of existing player in DB; Go to the view.cshtml page
+        //After click on view link button from PlayerList.cshtml page
         [HttpPost]
         public async Task<IActionResult> Update (UpdateDeletePlayerViewModel playerModel)
         {
@@ -84,6 +88,7 @@ namespace PlayersMVCApplication.Controllers
             return RedirectToAction("PlayerList");
         }
 
+        //Finally Delete Existing player in DB on click of Delete button in View.cshtml page
         [HttpPost]
         public async Task<IActionResult> Delete (UpdateDeletePlayerViewModel playerModel)
         {

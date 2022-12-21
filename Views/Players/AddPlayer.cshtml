@@ -1,4 +1,4 @@
-﻿@model PlayersMVCApplication.Models.AddPlayerViewModel
+﻿@model PlayersMVCApplication.Models.Player.Player
 
 @{
 }
@@ -8,17 +8,17 @@
 <form method="post" action="Player" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">Name</label>
-        <input type="text" class="form-control" asp-for="Name">
+        <input type="text" class="form-control" id="txtName" asp-for="Name">
     </div>
 
     <div class="mb-3">
         <label for="" class="form-label">Team</label>
-        <input type="text" class="form-control" asp-for="Team">
+        <input type="text" class="form-control" id="txtTeam" asp-for="Team">
     </div>
 
     <div class="mb-3">
         <label for="" class="form-label">Jersey Number</label>
-        <input type="number" class="form-control" asp-for="JersyNumber">
+        <input type="number" class="form-control" id="txtJerseyNumber" asp-for="JersyNumber">
     </div>
     
     <button type="submit" class="btn btn-primary">Submit</button>
