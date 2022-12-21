@@ -10,24 +10,28 @@ namespace PlayersMVCApplication.Controllers
     {
         private readonly PlayerMVCDbContext dbContext;
 
+        //Constructor
         public PlayersController(PlayerMVCDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
+        //Get All Data From DB
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> PlayerList()
         {
             var players = await dbContext.Players.ToListAsync();
             return View(players);
         }
 
+        //Go to addPlayer.cshtml from home page after clicking add player link button
         [HttpGet]
-        public IActionResult Player()
+        public IActionResult AddPlayer()
         {
             return View();
         }
 
+        //Add New Player in DB
         [HttpPost]
         public async Task<IActionResult> Player(AddPlayerViewModel addPlayerViewModel)
         {
@@ -39,7 +43,7 @@ namespace PlayersMVCApplication.Controllers
             };
             await dbContext.Players.AddAsync(player);
             await dbContext.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("PlayerList");
         }
 
         [HttpGet]
@@ -58,7 +62,7 @@ namespace PlayersMVCApplication.Controllers
                 };
                 return await Task.Run(()=> View("View",viewModel));
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("PlayerList");
         }
 
         [HttpPost]
@@ -74,10 +78,10 @@ namespace PlayersMVCApplication.Controllers
 
                 await dbContext.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("PlayerList");
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("PlayerList");
         }
 
         [HttpPost]
@@ -90,9 +94,9 @@ namespace PlayersMVCApplication.Controllers
                 dbContext.Players.Remove(player);
                 await dbContext.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("PlayerList");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("PlayerList");
         }
     }
 }
