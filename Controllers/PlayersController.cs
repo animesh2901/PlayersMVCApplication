@@ -43,8 +43,7 @@ namespace PlayersMVCApplication.Controllers
             };
             await dbContext.Players.AddAsync(newPlayer);
             await dbContext.SaveChangesAsync();
-            return RedirectToAction("Playe" +
-                "rList");
+            return RedirectToAction("PlayerList");
         }
 
         //Return to PlayerList.cshtml page after successfully add new player
