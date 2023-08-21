@@ -1,25 +1,51 @@
-﻿@model PlayersMVCApplication.Models.Player.Player
+﻿@using Newtonsoft.Json;
+@using PlayersMVCApplication.Models.Player;
+@model PlayersMVCApplication.Models.Player.Player
 
 @{
 }
 
 <h1> Add Player</h1>
 
-<form method="post" action="Player" class="mt-5">
+<form method="post" action="AddPlayer" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">Name</label>
         <input type="text" class="form-control" id="txtName" asp-for="Name">
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="" class="form-label">Phone Number   <input type="number" value="+91" disabled/></label>
+        <input type="number" min="1000000000" max="9999999999" class="form-control" id="txtPhoneNumber" asp-for="PhoneNumber" placeholder="(000)00 00000">
+        <span asp-validation-for="PhoneNumber"></span>
     </div>
 
     <div class="mb-3">
         <label for="" class="form-label">Team</label>
         <input type="text" class="form-control" id="txtTeam" asp-for="Team">
+        <span asp-validation-for="Team"></span>
     </div>
 
     <div class="mb-3">
         <label for="" class="form-label">Jersey Number</label>
-        <input type="number" class="form-control" id="txtJerseyNumber" asp-for="JersyNumber">
+        <input type="number" min="1" max="100" class="form-control" id="txtJerseyNumber" asp-for="JersyNumber">
+        <span asp-validation-for="JersyNumber"></span>
     </div>
+
+   @* <div class="mb-3">
+        <label for="" class="form-label">Country</label>
+        <select class="form-control" id="ddlCountry" asp-for="Country"></select>
+    </div>
+
+    <div class="mb-3">
+        <label for="" class="form-label">State</label>
+        <select class="form-control" id="ddlState" asp-for="State"></select>
+    </div>
+
+    <div class="mb-3">
+        <label for="" class="form-label">City</label>
+        <select class="form-control" id="ddlCity" asp-for="City"></select>
+    </div>*@
     
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

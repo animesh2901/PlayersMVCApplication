@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayersMVCApplication.Data;
 
@@ -10,9 +11,11 @@ using PlayersMVCApplication.Data;
 namespace PlayersMVCApplication.Migrations
 {
     [DbContext(typeof(PlayerMVCDbContext))]
-    partial class PlayerMVCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230618155455_adding city state country and phonenumber")]
+    partial class addingcitystatecountryandphonenumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +42,6 @@ namespace PlayersMVCApplication.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("PhoneNumber")
@@ -49,7 +51,6 @@ namespace PlayersMVCApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Team")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

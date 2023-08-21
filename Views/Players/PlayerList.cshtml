@@ -10,8 +10,12 @@
         <tr>
             <th>ID</th>
             <th>NAME</th>
+            <th>Phone Number</th>
             <th>TEAM</th>
             <th>JERSEY NUMBER</th>
+            @*<th>Country</th>
+            <th>State</th>
+            <th>City</th>*@
         </tr>
     </thead>
     <tbody>
@@ -20,8 +24,12 @@
             <tr>
                 <td>@player.Id</td>
                 <td>@player.Name</td>
+                <td>@player.PhoneNumber</td>
                 <td>@player.Team</td>
                 <td>@player.JersyNumber</td>
+               @* <td>@player.Country</td>
+                <td>@player.State</td>
+                <td>@player.City</td>*@
                 <td><a href = "View/@player.Id">View</a></td>
             </tr>
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PlayersMVCApplication.Data;
 using PlayersMVCApplication.Models;
 using PlayersMVCApplication.Models.Player;
@@ -33,17 +34,36 @@ namespace PlayersMVCApplication.Controllers
 
         //Add New Player in DB
         [HttpPost]
-        public async Task<IActionResult> Player(Player player)
+        public async Task<IActionResult> AddPlayer(Player player)
         {
-            var newPlayer = new Player()
-            {                
-                Name = player.Name,
-                Team = player.Team,
-                JersyNumber = player.JersyNumber
-            };
-            await dbContext.Players.AddAsync(newPlayer);
-            await dbContext.SaveChangesAsync();
-            return RedirectToAction("PlayerList");
+            try
+            {
+
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+                //TempData["Country"] = GetCountryList();
+                var newPlayer = new Player()
+                {
+                    Name = player.Name,
+                    PhoneNumber = player.PhoneNumber,
+                    Team = player.Team,
+                    JersyNumber = player.JersyNumber,
+                    //Country = player.Country,
+                    //State = player.State,
+                    //City = player.City
+                };
+                await dbContext.Players.AddAsync(newPlayer);
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("PlayerList");
+            }
+            catch (Exception ex)
+            {
+                TempData["Exception"] = ex.Message;
+                return View();
+
+            }
         }
 
         //Return to PlayerList.cshtml page after successfully add new player
@@ -59,8 +79,12 @@ namespace PlayersMVCApplication.Controllers
                 {
                     Id = validatePlayer.Id,
                     Name = validatePlayer.Name,
+                    PhoneNumber = validatePlayer.PhoneNumber,
                     Team = validatePlayer.Team,
-                    JersyNumber = validatePlayer.JersyNumber
+                    JersyNumber = validatePlayer.JersyNumber,
+                    //Country = validatePlayer.Country,
+                    //State = validatePlayer.State,
+                    //City = validatePlayer.City
                 };
                 return await Task.Run(() => View("View", viewModel));
             }
@@ -70,15 +94,19 @@ namespace PlayersMVCApplication.Controllers
         //For updation of existing player in DB; Go to the view.cshtml page
         //After click on view link button from PlayerList.cshtml page
         [HttpPost]
-        public async Task<IActionResult> Update (Player player)
+        public async Task<IActionResult> Update(Player player)
         {
             var updatePlayer = await dbContext.Players.FindAsync(player.Id);
 
             if (updatePlayer != null)
             {
                 updatePlayer.Name = player.Name;
-                updatePlayer.Team= player.Team;
+                updatePlayer.PhoneNumber = player.PhoneNumber;
+                updatePlayer.Team = player.Team;
                 updatePlayer.JersyNumber = player.JersyNumber;
+                //updatePlayer.Country = player.Country;
+                //updatePlayer.State = player.State;
+                //updatePlayer.City = player.City;
 
                 await dbContext.SaveChangesAsync();
 
@@ -90,7 +118,7 @@ namespace PlayersMVCApplication.Controllers
 
         //Finally Delete Existing player in DB on click of Delete button in View.cshtml page
         [HttpPost]
-        public async Task<IActionResult> Delete (Player player)
+        public async Task<IActionResult> Delete(Player player)
         {
             var deletePlayer = await dbContext.Players.FindAsync(player.Id);
 
@@ -102,6 +130,30 @@ namespace PlayersMVCApplication.Controllers
                 return RedirectToAction("PlayerList");
             }
             return RedirectToAction("PlayerList");
+        }
+
+        public async Task<Object> GetCountryList()
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://alpha-vantage.p.rapidapi.com/query?interval=5min&function=TIME_SERIES_INTRADAY&symbol=MSFT&datatype=json&output_size=compact"),
+                Headers =
+                        {
+                            { "Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfZW1haWwiOiJhbmltZXNoYW5hbmQyOTAxQGdtYWlsLmNvbSIsImFwaV90b2tlbiI6InB6ZVlicE5kRm1fMV82OG1tV2JxRXcwZ0xPbU1semxTYVlFVGtlUi1OWHhpMDllR0l6ODJUX1J0Skp0aktRV0ZIVU0ifSwiZXhwIjoxNjg1MTM0NzMyfQ.tI1dkfXJcunN9hrRIN4M6F255GVr_EZfkVGVXmd3bhE" },
+                            { "Accept", "application/json" }
+                        }
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = response.Content.ReadAsStringAsync().Result;
+                //  
+                //TempData["CountryList"]= body;
+                return body;
+            }
+
         }
     }
 }
