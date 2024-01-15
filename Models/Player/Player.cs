@@ -18,6 +18,7 @@ namespace PlayersMVCApplication.Models.Player
         public string? Country { get; set; }
         public string? State { get; set; }
         public string? City { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
     public class Country

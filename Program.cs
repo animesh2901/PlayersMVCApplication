@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using PlayersMVCApplication.BusinessLayer.BusinessLogics;
+using PlayersMVCApplication.BusinessLayer.Interfaces;
 using PlayersMVCApplication.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddControllersWithViews();
 //Connection String
 builder.Services.AddDbContext<PlayerMVCDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Mapping
+//builder.Services.AddSingleton<IBusinessLogics>(sp => sp.GetRequiredService<BusinessLogics>());
 
 var app = builder.Build();
 

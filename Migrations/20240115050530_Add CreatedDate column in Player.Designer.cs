@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayersMVCApplication.Data;
 
@@ -11,9 +12,11 @@ using PlayersMVCApplication.Data;
 namespace PlayersMVCApplication.Migrations
 {
     [DbContext(typeof(PlayerMVCDbContext))]
-    partial class PlayerMVCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115050530_Add CreatedDate column in Player")]
+    partial class AddCreatedDatecolumninPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

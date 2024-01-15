@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayersMVCApplication.Models.Player;
+using PlayersMVCApplication.Models;
 
 namespace PlayersMVCApplication.Data
 {
@@ -10,5 +11,7 @@ namespace PlayersMVCApplication.Data
         }
 
         public DbSet<Player> Players { get; set; }
+
+        public DbSet<Team> Team { get; set; }
     }
 }

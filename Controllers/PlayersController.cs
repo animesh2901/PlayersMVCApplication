@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using PlayersMVCApplication.Data;
-using PlayersMVCApplication.Models;
 using PlayersMVCApplication.Models.Player;
+using System.Globalization;
+using System.Web.Helpers;
 
 namespace PlayersMVCApplication.Controllers
 {
@@ -22,6 +22,7 @@ namespace PlayersMVCApplication.Controllers
         public async Task<IActionResult> PlayerList()
         {
             var players = await dbContext.Players.ToListAsync();
+
             return View(players);
         }
 
@@ -154,6 +155,12 @@ namespace PlayersMVCApplication.Controllers
                 return body;
             }
 
+        }
+
+        public static int GetWeekofYear (DateTime date)
+        {
+            var dow = CultureInfo.CurrentCulture.Calendar.GetDayOfWeek(date);
+            return ((int)dow);
         }
     }
 }

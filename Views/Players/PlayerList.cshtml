@@ -8,11 +8,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
+            @* <th>ID</th> *@
             <th>NAME</th>
-            <th>Phone Number</th>
+            @* <th>Phone Number</th> *@
             <th>TEAM</th>
             <th>JERSEY NUMBER</th>
+            <th>Created Date</th>
             @*<th>Country</th>
             <th>State</th>
             <th>City</th>*@
@@ -22,16 +23,122 @@
         @foreach (var player in Model)
         {
             <tr>
-                <td>@player.Id</td>
-                <td>@player.Name</td>
-                <td>@player.PhoneNumber</td>
+                @* <td>@player.Id</td> *@
+                <td><a href="View/@player.Id">@player.Name</a></td>
+                @* <td>@player.PhoneNumber</td> *@
                 <td>@player.Team</td>
                 <td>@player.JersyNumber</td>
-               @* <td>@player.Country</td>
-                <td>@player.State</td>
-                <td>@player.City</td>*@
-                <td><a href = "View/@player.Id">View</a></td>
+                <td>@player.CreatedDate</td>
+                @* <td>@player.Country</td>
+            <td>@player.State</td>
+            <td>@player.City</td>*@
+                <td><a href="View/@player.Id">View</a></td>
             </tr>
         }
     </tbody>
 </table>
+
+
+<canvas id="playerChart" width="400" height="200"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/chart.js"></script>
+
+<script>
+    debugger;
+        // var ctx = document.getElementById('playerChart').getContext('2d');
+
+        // var playerData = @Html.Raw(Json.Serialize(Model));
+        // // Group player data by start date
+        // var groupedData = playerData.reduce(function (acc, player) {
+        //     debugger;
+        //     var startDate = moment(player.createdDate).format('YYYY-MM-DD');
+        //     var week = moment(player.createdDate).format('YYYY-WW');
+        //     if (!acc[startDate]) {
+        //         acc[startDate] = 0;
+        //     }
+        //     acc[startDate]++;
+        //     return acc;
+        // }, {});
+
+        // var startDates = Object.keys(groupedData);
+        // var playerCounts = startDates.map(function (startDate) {
+        //     return groupedData[startDate];
+        // });
+
+        // var chart = new Chart(ctx, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: startDates,
+        //         datasets: [{
+        //             label: 'Number of Players Joining Each Week',
+        //             data: playerCounts,
+        //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        //             borderColor: 'rgba(75, 192, 192, 1)',
+        //             borderWidth: 1
+        //         }]
+        //     },
+        //     options: {
+        //         scales: {
+        //             x: {
+        //                 type: 'time',
+        //                 time: {
+        //                     unit: 'day' // You can adjust the unit based on your preference (day, week, month, etc.)
+        //                 },
+        //                 title: {
+        //                     display: true,
+        //                     text: 'Start Date'
+        //                 }
+        //             },
+        //             y: {
+        //                 beginAtZero: true
+        //             }
+        //         }
+        //     }
+        // });
+
+                var ctx = document.getElementById('playerChart').getContext('2d');
+
+                var playerData = @Html.Raw(Json.Serialize(Model));
+                // Group player data by week
+                var groupedData = playerData.reduce(function (acc, player) {
+                    var week = moment(player.createdDate).format('YYYY-WW');
+                    if (!acc[week]) {
+                        acc[week] = 0;
+                    }
+                    acc[week]++;
+                    return acc;
+                }, {});
+
+                var weeks = Object.keys(groupedData);
+                var playerCounts = weeks.map(function (week) {
+                    return groupedData[week];
+                });
+                var maxCount = Math.max(...playerCounts);
+                var suggestedMax = Math.ceil(maxCount * 1.2);
+                // Perform necessary processing on playerData to get the weekly counts
+
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: weeks,
+                        datasets: [{
+                            label: 'Number of Players Joining Each Week',
+                            data: playerCounts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMax: suggestedMax
+                            }
+                        }
+                    }
+                });
+
+</script>
